@@ -6,6 +6,7 @@ import { request } from "@/services/api";
 const STORAGE_TOKEN_KEY = "token";
 const STORAGE_USER_KEY = "user";
 const COOKIE_NAME = "auth_token";
+const USER_ROL_COOKIE_NAME = "user_rol";
 
 // Función para establecer una cookie
 function setCookie(name, value, days) {
@@ -23,8 +24,10 @@ const AuthContext = createContext(undefined);
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
+    setLoad(true);
     const savedToken = localStorage.getItem(STORAGE_TOKEN_KEY);
     const savedUser = localStorage.getItem(STORAGE_USER_KEY);
 
@@ -35,6 +38,8 @@ export function AuthProvider({ children }) {
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
+
+    setLoad(false);
   }, []);
 
   // Función para iniciar sesión
@@ -43,24 +48,29 @@ export function AuthProvider({ children }) {
     body.append("username", email);
     body.append("password", password);
 
-    // Realizar la solicitud de inicio de sesión al backend
     const data = await request("/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: body.toString(),
     });
 
-    // Obtener los datos del usuario autenticado
     const userData = await request("/auth/me", {
       headers: { Authorization: `Bearer ${data.access_token}` },
     });
 
-    // Guardar el token y los datos del usuario en el almacenamiento local y en las cookies
+    // Unificamos el uso de la propiedad (asumiendo que en tu backend se llama 'rol')
+    const userRol = userData.rol || userData.user_rol;
+
     localStorage.setItem(STORAGE_TOKEN_KEY, data.access_token);
     localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(userData));
 
-    setCookie(COOKIE_NAME, data.access_token, 7);
+    // Guardamos consistentemente el rol
+    if (userRol) {
+      localStorage.setItem(USER_ROL_COOKIE_NAME, userRol);
+      setCookie(USER_ROL_COOKIE_NAME, userRol, 7);
+    }
 
+    setCookie(COOKIE_NAME, data.access_token, 7);
     setToken(data.access_token);
     setUser(userData);
 
@@ -81,7 +91,9 @@ export function AuthProvider({ children }) {
   const value = {
     token,
     user,
+    load,
     isAuthenticated: !!token,
+    userRol: user?.rol || null,
     login,
     logout,
   };
