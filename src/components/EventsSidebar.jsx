@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator"
 import { getEvents } from "@/services/eventsServices"
 import { getCategoryIcon, slugifyCategoria } from "@/lib/categoryIcons"
 import { useTheme } from "@/context/ThemeContext";
+import Image from "next/image"
 
 export function EventsSidebar() {
     const [events, setEvents] = useState([]);
@@ -44,10 +45,10 @@ export function EventsSidebar() {
                     <SidebarGroup>
                         <div className="flex justify-center items-center pb-5">
                             {mounted ? (
-                                <img src={theme === "light" ? "/evsite-black.svg" : "/evsite.svg"} alt="logo" className="h-6" />
+                                <Image height={80} width={80} src={theme === "light" ? "/evsite-black.svg" : "/evsite.svg"} alt="logo" />
                             ) : (
-                                <div className="h-6 w-20" />
-                            )}
+                            <div className="h-6 w-20" />
+)}
                         </div>
                         <SidebarGroupLabel>Principal</SidebarGroupLabel>
                         <SidebarMenu>

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 // shadcn Componentes
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarGroupLabel, SidebarMenuButton, SidebarMenuItem, SidebarMenu, } from "@/components/ui/sidebar";
@@ -18,7 +19,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
 
 // Iconos
-import { Calendar, User, Settings, LogOut } from 'lucide-react';
+import { Calendar, LogOut } from 'lucide-react';
 
 function AvatarWithBadge() {
     return (
@@ -34,6 +35,11 @@ function AvatarWithBadge() {
 export function AppSidebar() {
     const { theme } = useTheme();
     const { user, logout } = useAuth();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const items = [
         {
@@ -68,10 +74,10 @@ export function AppSidebar() {
 
         <Sidebar id="sidebar-trigger">
             <SidebarHeader className="flex flex-col items-center justify-center my-7">
-                {theme === "light" ? (
-                    <img src={logodark} className="h-6" alt="Logo" />
+                {mounted ? (
+                    <Image height={80} width={80} src={theme === "light" ? logodark : logolight} alt="logo" />
                 ) : (
-                    <img src={logolight} className="h-6" alt="Logo" />
+                    <div className="h-6 w-20" />
                 )}
             </SidebarHeader>
             <Separator />

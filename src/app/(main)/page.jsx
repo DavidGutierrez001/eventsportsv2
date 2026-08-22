@@ -46,7 +46,7 @@ export default function Home() {
     }, {});
 
     return (
-        <div className="p-5 gap-5 relative">
+        <div className="p-5 gap-5 relative min-h-[calc(100svh-77px)]">
             <div className="flex flex-col gap-5">
                 {loading && (
                     <section className="flex flex-col gap-3">
