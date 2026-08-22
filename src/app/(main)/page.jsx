@@ -52,7 +52,7 @@ export default function Home() {
                     <section className="flex flex-col gap-3">
                         <Skeleton className="text-xl font-bold h-5 w-30 animate-in fade-in-0 duration-300"></Skeleton>
                         <div className="flex gap-5 justify-self-start w-full animate-in fade-in-0 duration-300">
-                            {Array.from({ length: 3 }).map((_, index) => (
+                            {Array.from({ length: 1 }).map((_, index) => (
                                 <Skeleton key={index} className="w-80 h-100 p-3 rounded-none"></Skeleton>
                             ))}
                         </div>
@@ -63,7 +63,7 @@ export default function Home() {
                     Object.entries(eventosPorCategoria).map(([nombreCategoria, listaEventos]) => (
                         <section key={nombreCategoria} className="flex flex-col gap-3">
                             <h1 className="text-xl">{nombreCategoria}</h1>
-                            <div className="flex gap-5 justify-self-start animate-in fade-in-0 duration-300 mb-5">
+                            <div className="flex gap-5 justify-self-start animate-in fade-in-0 duration-300 mb-5 overflow-auto">
                                 {listaEventos.map((event) => (
                                     <EventCard
                                         key={event._id}
@@ -91,7 +91,7 @@ export default function Home() {
 
             {!isAuthenticated ? (
                 <Dialog open={openRegister} onOpenChange={setOpenRegister}>
-                    <DialogContent className="max-h-150! h-full">
+                    <DialogContent className="max-h-140! max-w-100! h-full">
                         <div className="flex flex-col justify-around items-center">
                             <LoginForm />
                         </div>

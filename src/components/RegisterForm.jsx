@@ -9,9 +9,11 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner"
 import { registerUser } from "@/services/authService";
+import { toast } from "@/components/ui/toast";
 
 // Esquema de validación para el formulario de registro
 const formSchema = z.object({
@@ -39,6 +41,7 @@ const formSchema = z.object({
 
 // Componente de registro
 export default function RegisterForm() {
+    const router = useRouter();
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -57,6 +60,8 @@ export default function RegisterForm() {
 
         try {
             await registerUser(data);
+            toast.add({ title: "Cuenta creada", description: `¡Tu cuenta se ha creado correctamente!, ahora puedes iniciar sesión.`, type: "success" });
+            router.push("/login");
         }
         catch (error) {
             form.setError("root.serverError", {
@@ -68,7 +73,7 @@ export default function RegisterForm() {
 
     return (
         <>
-            <section className="flex w-full max-w-90 flex-col space-y-6 animate-in fade-in-0 duration-300">
+            <section className="flex w-full max-w-80 flex-col space-y-6 animate-in fade-in-0 duration-300">
                 <form
                     className="flex flex-col gap-5"
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -162,15 +167,14 @@ export default function RegisterForm() {
                     <Button
                         className="group relative h-14 overflow-hidden px-1"
                         type="submit"
-                        variant="default"
+                        variant="secondary"
                     >
                         {isSubmitting ? <Spinner /> : "Regístrarse"}
                     </Button>
                 </form>
             </section>
             <section className="flex flex-col gap-3 w-full max-w-84">
-                <Separator />
-                <p className="text-sm text-muted-foreground flex flex-col justify-center items-center">
+                <p className="text-sm text-muted-foreground flex flex-col justify-center items-center my-5">
                     ¿Ya tienes una cuenta?
                     <Link
                         href="/login"

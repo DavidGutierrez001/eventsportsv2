@@ -68,7 +68,7 @@ export default function LoginForm() {
 
     return (
         <>
-            <section className="flex w-full max-w-90 flex-col space-y-6 animate-in fade-in-0 duration-300">
+            <section className="flex w-full max-w-80 flex-col space-y-6 animate-in fade-in-0 duration-300">
                 <form
                     className="flex flex-col gap-5"
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -142,15 +142,14 @@ export default function LoginForm() {
                     <Button
                         className="group relative h-14 overflow-hidden px-1"
                         type="submit"
-                        variant="default"
+                        variant="secondary"
                     >
                         {isSubmitting ? <Spinner /> : "Iniciar sesión"}
                     </Button>
                 </form>
             </section>
             <section className="flex flex-col gap-3 w-full max-w-84">
-                <Separator />
-                <p className="text-sm text-muted-foreground flex flex-col justify-center items-center">
+                <p className="text-sm text-muted-foreground flex flex-col justify-center items-center my-5">
                     ¿No tienes una cuenta?
                     <Link
                         href="/register"

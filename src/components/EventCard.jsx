@@ -11,7 +11,7 @@ export default function EventCard({ event, onClick, variant = "outline" }) {
             onClick={onClick}
             variant={ghost ? "ghost" : "outline"}
             className={ghost
-                ? "relative animate-in fade-in duration-500 h-100 w-80 overflow-hidden"
+                ? "relative animate-in fade-in duration-500 h-100 w-70 md:w-80 overflow-hidden"
                 : "relative border flex-1 min-w-80 max-w-80 h-100 p-3 rounded-md overflow-hidden"}>
             {event.imagen_url ? (
                 <img
@@ -26,8 +26,8 @@ export default function EventCard({ event, onClick, variant = "outline" }) {
             )}
             {ghost ? (
                 <div className="flex flex-col gap-5 absolute bottom-0 right-0 w-full p-5">
-                    <h2 className="text-xl">{event.nombre}</h2>
-                    <p className="text-xs">{event.fecha ? new Date(event.fecha).toLocaleDateString() : "Fecha por definir"}</p>
+                    <h2 className="text-[clamp(1.1rem,1.12vw,1.12rem)] text-shadow">{event.nombre}</h2>
+                    <p className="text-xs font-light">{event.fecha ? new Date(event.fecha).toLocaleDateString() : "Fecha por definir"}</p>
                 </div>
             ) : (
                 <>
