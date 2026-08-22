@@ -53,7 +53,7 @@ export default function Home() {
                         <Skeleton className="text-xl font-bold h-5 w-30 animate-in fade-in-0 duration-300"></Skeleton>
                         <div className="flex gap-5 justify-self-start w-full animate-in fade-in-0 duration-300">
                             {Array.from({ length: 1 }).map((_, index) => (
-                                <Skeleton key={index} className="w-80 h-100 p-3 rounded-none"></Skeleton>
+                                <Skeleton key={index} className="w-80 h-117 p-3 rounded-none"></Skeleton>
                             ))}
                         </div>
                     </section>

@@ -58,7 +58,7 @@ export default function DetalleEvento({ params }) {
             {loading && (
                 <div className="flex gap-5 justify-start w-full animate-in fade-in-0">
                     {Array.from({ length: 1 }).map((_, index) => (
-                        <Skeleton key={index} className="w-80 h-100 p-3 rounded-none"></Skeleton>
+                        <Skeleton key={index} className="w-80 h-117 p-3 rounded-none"></Skeleton>
                     ))}
                 </div>
             )}

@@ -10,39 +10,42 @@ import { usePathname } from "next/navigation";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button"
-import { ThemeProvider } from "@/context/ThemeContext";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Toaster } from "@/components/ui/toast"
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb"
 
 // Iconos
-import { Bell } from "lucide-react";
+import { Bell, ArrowLeft } from "lucide-react";
 
 export default function RootLayout({ children }) {
 
     return (
-        <ThemeProvider>
-            <SidebarProvider
-                style={{
-                    "--sidebar-width": "18rem",
-                    "--sidebar-width-mobile": "20rem",
-                }}
-            >
-                <AppSidebar />
+        <SidebarProvider
+            style={{
+                "--sidebar-width": "18rem",
+                "--sidebar-width-mobile": "20rem",
+            }}
+        >
+            <AppSidebar />
 
-                <SidebarInset>
-                    <DashboardHeader />
+            <SidebarInset>
+                <DashboardHeader />
 
-                    <Separator />
+                <Separator />
 
-                    <main className="p-5 lg:p-7 h-full min-h-[calc(100svh-77px)]">
-                        {children}
-                    </main>
+                <main className="flex flex-col gap-5 p-5 lg:p-7 h-full min-h-[calc(100svh-77px)]">
+                    <Link href="/" className="w-fit">
+                        <Button variant="outline">
+                            <ArrowLeft />
+                            Regresar
+                        </Button>
+                    </Link>
+                    {children}
+                </main>
 
-                    <Toaster />
-                </SidebarInset>
-            </SidebarProvider>
-        </ThemeProvider>
+                <Toaster />
+            </SidebarInset>
+        </SidebarProvider>
     );
 }
 
@@ -70,23 +73,18 @@ function NotificationsPopover() {
             <PopoverTrigger render={<Button variant="outline" size="icon" aria-label="Abrir notificaciones" />}>
                 <Bell />
             </PopoverTrigger>
-            <PopoverContent className="min-h-50 w-full max-w-75 sm:max-w-100" align="end">
+            <PopoverContent className="min-h-50 w-80 sm:max-w-100" align="end">
                 <div className="flex justify-between items-center">
                     <h2 className="font-medium text-lg">Notificaciones</h2>
-                    <span className="flex rounded justify-center items-center text-md border w-8 h-8"></span>
                 </div>
-                <Separator />
-
                 <div className="flex flex-col gap-5">
-
+                    <span className="text-accent-foreground">Aún no hay notificaciones.</span>
                     <div className="flex flex-col gap-1">
                         <PopoverHeader className="font-medium"></PopoverHeader>
                         <PopoverDescription className="text-sm text-muted-foreground">
 
                         </PopoverDescription>
                     </div>
-
-                    <Separator />
                 </div>
 
             </PopoverContent>
@@ -95,7 +93,7 @@ function NotificationsPopover() {
 }
 
 const breadcrumbLabels = {
-    "dashboard": "Inicio",
+    "dashboard": "Panel",
     "eventos": "Eventos",
     "usuarios": "Usuarios",
 };
@@ -119,7 +117,7 @@ function BreadCrumb() {
 
                                 {isLast ? (
                                     <BreadcrumbPage>{label}</BreadcrumbPage>
-                                ) : segment === "inventario" ? (
+                                ) : segment === "dashboard" ? (
                                     <BreadcrumbLink className="cursor-default">{label}</BreadcrumbLink>
                                 ) : (
                                     <BreadcrumbLink render={<Link href={path} />}>
