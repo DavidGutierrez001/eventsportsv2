@@ -245,7 +245,7 @@ function EventFormInline({ event, onSuccess, onCancel }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="overflow-auto max-h-[calc(100svh-20rem)]">
+        <form onSubmit={handleSubmit} className="overflow-auto px-5 max-h-[calc(100svh-20rem)]">
             <DialogHeader>
                 <DialogTitle className="text-xl">{isEditing ? "Modificar Evento" : "Crear Evento"}</DialogTitle>
                 <DialogDescription>
@@ -261,7 +261,7 @@ function EventFormInline({ event, onSuccess, onCancel }) {
 
                 <Field>
                     <Label htmlFor="descripcion">Descripción</Label>
-                    <Input id="descripcion" name="descripcion" value={formData.descripcion} onChange={handleChange} maxLength={500} />
+                    <Input type="textarea" id="descripcion" name="descripcion" value={formData.descripcion} onChange={handleChange} maxLength={500} />
                 </Field>
 
                 <Field>
@@ -322,7 +322,7 @@ function EventFormDialog({ onSuccess }) {
             }>
             </DialogTrigger>
 
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="sm:max-w-2xl">
                 <EventFormInline
                     onSuccess={() => {
                         setOpen(false);
@@ -394,7 +394,7 @@ function EventRow({ event, onSuccess }) {
                 </TableCell>
             </TableRow>
 
-            <Dialog open={openEdit} onOpenChange={setOpenEdit}>
+            <Dialog open={openEdit} onOpenChange={setOpenEdit} className="w-[calc(100vw-2rem)]!">
                 <DialogContent>
                     <EventFormInline
                         event={event}

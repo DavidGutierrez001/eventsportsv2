@@ -27,7 +27,6 @@ export function AuthProvider({ children }) {
   const [load, setLoad] = useState(true);
 
   useEffect(() => {
-    setLoad(true);
     const savedToken = localStorage.getItem(STORAGE_TOKEN_KEY);
     const savedUser = localStorage.getItem(STORAGE_USER_KEY);
 
@@ -36,7 +35,11 @@ export function AuthProvider({ children }) {
     }
 
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        setUser(null);
+      }
     }
 
     setLoad(false);
@@ -58,13 +61,11 @@ export function AuthProvider({ children }) {
       headers: { Authorization: `Bearer ${data.access_token}` },
     });
 
-    // Unificamos el uso de la propiedad (asumiendo que en tu backend se llama 'rol')
     const userRol = userData.rol || userData.user_rol;
 
     localStorage.setItem(STORAGE_TOKEN_KEY, data.access_token);
     localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(userData));
 
-    // Guardamos consistentemente el rol
     if (userRol) {
       localStorage.setItem(USER_ROL_COOKIE_NAME, userRol);
       setCookie(USER_ROL_COOKIE_NAME, userRol, 7);
@@ -98,7 +99,6 @@ export function AuthProvider({ children }) {
     logout,
   };
 
-  // Renderizar el proveedor de contexto con los valores de autenticación
   return (
     <AuthContext.Provider value={value}>
       {children}

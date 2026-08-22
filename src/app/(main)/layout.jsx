@@ -13,13 +13,15 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
+    DialogFooter,
+    DialogClose
 } from "@/components/ui/dialog"
 import Link from "next/link";
 import { getEvents, getMySubscriptions, cancelSubscription } from "@/services/eventsServices"
 import { useState, useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/components/ui/toast";
-import { Trash, SquareArrowOutUpRight } from "lucide-react";
+import { X, SquareArrowOutUpRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 
@@ -79,7 +81,7 @@ export default function AppLayout({ children }) {
             <div className="flex-1 max-w-screen overflow-x-hidden">
                 <header className="flex relative items-center h-15 border-b justify-between px-3">
                     <SidebarTrigger />
-                    <span className="absolute left-1/2 -translate-x-1/2 text-sm text-foreground font-medium">{pathname.slice(1).toUpperCase().split('/')[1] || "EVENTOS"}</span>
+                    <span className="absolute left-22 -translate-x-1/2 text-sm text-foreground font-medium">{pathname.slice(1).toUpperCase().split('/')[1] || "EVENTOS"}</span>
                     {load ? (
                         <div className="flex gap-1 items-center">
                             <Skeleton className="size-9 rounded-full" />
@@ -112,9 +114,10 @@ export default function AppLayout({ children }) {
                                             <DropdownMenuGroup>
                                                 <DropdownMenuLabel>Administración</DropdownMenuLabel>
                                                 <DropdownMenuItem
+                                                    className="justify-between"
                                                     render={
                                                         <Link href="/dashboard">
-                                                            Panel
+                                                            Ir al panel
                                                             <SquareArrowOutUpRight />
                                                         </Link>
                                                     }>
@@ -155,44 +158,42 @@ export default function AppLayout({ children }) {
                 </header>
 
                 <div className="p-5">
+                    {/* Si está cargando, muestra el Skeleton */}
                     {load ? (
-                        <>
-                            <Skeleton className="h-70 w-full" />
-                        </>
+                        <Skeleton className="h-70 w-full" />
                     ) : !isAuthenticated ? (
-                        <>
-                            {!isAuthenticated && (
-                                <div className="w-full relative animate-in fade-in duration-1000">
-                                    <img
-                                        src="/banner-welcome.svg"
-                                        alt="banner bienvenida"
-                                        className="object-cover w-full h-70"
-                                    />
-                                    <div className="absolute top-0 left-0 p-3 gap-5 w-full h-full flex flex-col justify-center items-center">
-                                        <h1 className="font-open-sauce text-6xl opacity-80 tracking-tighter">
-                                            Inscríbete a los eventos
-                                        </h1>
-                                        <p className="max-w-200 text-center text-lg">
-                                            No te pierdas la oportunidad de participar en los eventos más emocionantes. Explora, elige y asegura tu cupo en la acción para no olvidar lo que está pendiente.
-                                        </p>
+                        /* Si ya terminó de cargar Y NO está autenticado, muestra el banner */
+                        <div className="w-full relative animate-in fade-in duration-1000">
+                            <img
+                                src="/banner-welcome.svg"
+                                alt="banner bienvenida"
+                                className="object-cover w-full h-80 md:h-70"
+                            />
+                            <div className="absolute top-0 left-0 p-5 gap-5 w-full h-full flex flex-col justify-center items-center text-center">
+                                <h1 className="font-open-sauce text-[clamp(2rem,3.5vw,3.7rem)] opacity-80 tracking-tighter leading-none">
+                                    Inscríbete a los eventos
+                                </h1>
+                                <p className="max-w-[800px] text-center text-[clamp(1rem,1.2vw,1.2rem)] opacity-80 tracking-tight">
+                                    No te pierdas la oportunidad de participar en los eventos más emocionantes. Explora, elige y asegura tu cupo en la acción para no olvidar lo que está pendiente.
+                                </p>
 
-                                        <Link href="/register">
-                                            <Button variant="default" className="h-12 px-10">
-                                                Registrate ahora
-                                            </Button>
-                                        </Link>
-                                    </div>
-                                </div>
-                            )}
-                        </>)
-                        : null
-                    }
+                                <Link href="/register">
+                                    <Button variant="default" className="h-12 px-10">
+                                        Registrate ahora
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
+                    ) : (
+                        /* Si ya terminó de cargar Y SÍ está autenticado, puedes mostrar otra cosa o dejarlo vacío */
+                        null
+                    )}
                 </div>
 
                 {children}
 
                 <Dialog open={openSubscriptions} onOpenChange={setOpenSubscriptions}>
-                    <DialogContent className="max-h-150! max-w-200! w-full h-full flex flex-col">
+                    <DialogContent className="max-h-150! max-w-200! w-[calc(100%-2rem)] h-full flex flex-col ">
                         <DialogHeader>
                             <DialogTitle className="text-xl">Mis inscripciones</DialogTitle>
                             <DialogDescription>Aqui puedes ver todas tus inscripciones que tienes activas.</DialogDescription>
@@ -206,28 +207,28 @@ export default function AppLayout({ children }) {
                                 No tienes inscripciones activas.
                             </p>
                         ) : (
-                            <div className="flex flex-col gap-3 max-h-100 overflow-auto">
+                            <div className="flex flex-col gap-3 max-h-150 overflow-auto">
                                 {subscriptions.map((sub) => {
                                     const event = events.find((e) => e._id === sub.evento_id);
                                     return (
-                                        <div key={sub._id} className="flex items-center justify-around border rounded p-3 relative">
-                                            <div className="flex flex-col justify-center h-30">
-                                                <span className="text-lg font-light">{event?.nombre || sub.evento_id}</span>
-                                                <span className="text-sm text-muted-foreground">
-                                                    Inscrito el: {new Date(sub.fecha_inscripcion).toLocaleDateString()}
-                                                </span>
-                                            </div>
+                                        <div key={sub._id} className="grid grid-cols-2 justify-self-center border rounded p-3 relative shadow-lg">
                                             <img
                                                 src={event?.imagen_url || "/default-image.jpg"}
                                                 alt="foto del evento"
                                                 className="h-full grayscale-50 opacity-10 left-0 w-full absolute object-cover -z-10"
                                             />
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex flex-col justify-center items-center h-25">
+                                                <span className="text-lg font-light">{event?.nombre || sub.evento_id}</span>
+                                                <span className="text-sm text-muted-foreground">
+                                                    Inscrito el: {new Date(sub.fecha_inscripcion).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                            <div className="flex flex-col justify-center items-center gap-2">
                                                 <Button
                                                     variant="destructive"
                                                     size="sm"
                                                     onClick={() => handleCancelSubscription(sub.evento_id)}>
-                                                    <Trash />
+                                                    <X />
                                                     Cancelar
                                                 </Button>
                                             </div>

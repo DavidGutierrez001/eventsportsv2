@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { getEvents } from "@/services/eventsServices";
 import { useAuth } from "@/context/AuthContext";
@@ -58,7 +57,7 @@ export default function DetalleEvento({ params }) {
         <div className="p-5">
             {loading && (
                 <div className="flex gap-5 justify-start w-full animate-in fade-in-0">
-                    {Array.from({ length: 3 }).map((_, index) => (
+                    {Array.from({ length: 1 }).map((_, index) => (
                         <Skeleton key={index} className="w-80 h-100 p-3 rounded-none"></Skeleton>
                     ))}
                 </div>

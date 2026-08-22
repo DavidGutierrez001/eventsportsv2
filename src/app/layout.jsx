@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
         openSauceFont.variable
       )}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden relative animate-in fade-in-0 duration-1000">
+      <body className="min-h-full flex flex-col overflow-x-hidden relative">
         <Providers>
           {children}
         </Providers>

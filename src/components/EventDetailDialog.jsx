@@ -74,9 +74,9 @@ export default function EventDetailDialog({ event, open, onOpenChange, onRequire
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="flex max-w-250! max-h-140! h-full w-full">
-                <div className="max-w-1/2 w-full overflow-hidden rounded shadow-xl flex justify-center items-center">
-                    {event.imagen_url ? (
+            <DialogContent className="flex flex-col md:flex-row max-w-200! md:max-w-250 max-h-140! h-full w-[calc(100%-2rem)]">
+                <div className="w-full overflow-hidden rounded shadow-xl flex justify-center items-center flex-1">
+                    {event.imagen_url ? (   
                         <img
                             className="object-cover w-full h-full"
                             src={event.imagen_url}
@@ -86,7 +86,7 @@ export default function EventDetailDialog({ event, open, onOpenChange, onRequire
                         <ImageOff size={100} strokeWidth={0.7} />
                     )}
                 </div>
-                <div className="flex flex-col w-full gap-5">
+                <div className="flex flex-col w-full gap-5 flex-1">
                     <DialogHeader>
                         <DialogTitle className="text-xl">{event.nombre}</DialogTitle>
                     </DialogHeader>
@@ -99,7 +99,7 @@ export default function EventDetailDialog({ event, open, onOpenChange, onRequire
                         <span className="bg-background/20 p-1 rounded px-3">Inscritos: {event.inscritos || 0} / {event.cupo_maximo}</span>
                     </div>
                     <Separator />
-                    <DialogFooter className="font-light sm:justify-between items-center mt-auto">
+                    <DialogFooter className="flex-row! font-light justify-between! items-center mt-auto">
                         <span>Comienza el: {new Date(event.fecha).toLocaleDateString("es-ES")}</span>
                         {isSubscribed ? (
                             <Button type="button" variant="outline" disabled>
