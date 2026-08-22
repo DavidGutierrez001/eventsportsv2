@@ -183,7 +183,7 @@ export default function AppLayout({ children }) {
                                     className="object-cover w-full h-80 md:h-70"
                                 />
                                 <div className="absolute top-0 left-0 p-5 gap-5 w-full h-full flex flex-col justify-center items-center text-center text-white">
-                                    <h1 className="font-open-sauce text-[clamp(2rem,3.5vw,3.7rem)] tracking-tighter leading-none">
+                                    <h1 className="font-open-sauce text-[clamp(2.4rem,3.5vw,3.7rem)] tracking-tighter leading-none">
                                         Inscríbete a los eventos
                                     </h1>
                                     <p className="max-w-200 text-center font-light text-[clamp(1rem,1.2vw,1.2rem)] opacity-90 tracking-tight">
