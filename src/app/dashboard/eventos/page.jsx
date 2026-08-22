@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Plus, MoreVerticalIcon, Trash, Pencil, ImagePlus } from "lucide-react";
 import { getEvents, createEvent, updateEvent, deleteEvent, uploadEventImage, deleteEventImage } from "@/services/eventsServices";
 import { toast } from "@/components/ui/toast";
+import EventDetailDialog from "@/components/EventDetailDialog";
 
 export default function Eventos() {
     const [events, setEvents] = useState([]);
@@ -336,6 +337,7 @@ function EventFormDialog({ onSuccess }) {
 }
 
 function EventRow({ event, onSuccess }) {
+    const [openView, setOpenView] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -356,7 +358,7 @@ function EventRow({ event, onSuccess }) {
 
     return (
         <>
-            <TableRow className="cursor-pointer" onClick={() => setOpenEdit(true)}>
+            <TableRow className="cursor-pointer" onClick={() => setOpenView(true)}>
                 <TableCell>{event?.fecha ? new Date(event.fecha).toLocaleDateString() : "—"}</TableCell>
                 <TableCell className="font-medium">{event?.nombre}</TableCell>
                 <TableCell>{event?.categoria}</TableCell>
@@ -393,6 +395,13 @@ function EventRow({ event, onSuccess }) {
                     </DropdownMenu>
                 </TableCell>
             </TableRow>
+
+            <EventDetailDialog
+                event={event}
+                open={openView}
+                onOpenChange={setOpenView}
+                readOnly
+            />
 
             <Dialog open={openEdit} onOpenChange={setOpenEdit} className="w-[calc(100vw-2rem)]!">
                 <DialogContent>

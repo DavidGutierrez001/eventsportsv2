@@ -58,7 +58,7 @@ export function AppSidebar() {
     const handleLogout = () => {
         setLogoutDialogOpen(false);
         logout();
-        router.push("/login");
+        router.push("/");
     }
 
     const logodark = "/evsite-black.svg";

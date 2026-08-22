@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, } from "@/components/ui/sidebar"
+
+import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Separator } from "@/components/ui/separator"
 import { getEvents } from "@/services/eventsServices"
+import { getCategoryIcon, slugifyCategoria } from "@/lib/categoryIcons"
+import { useTheme } from "@/context/ThemeContext";
 
 export function EventsSidebar() {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(false);
     const pathname = usePathname()
     const newpathname = pathname.split('/');
+    const { theme } = useTheme();
 
     useEffect(() => {
+        setMounted(true);
         try {
             setLoading(true);
             const fetchEvents = async () => {
@@ -33,22 +40,27 @@ export function EventsSidebar() {
         <>
             <Sidebar>
                 <SidebarHeader />
-                <SidebarContent>
+                <SidebarContent className="px-3">
                     <SidebarGroup>
                         <div className="flex justify-center items-center pb-5">
-                            <img src="/evsite.svg" alt="logo" className="w-20" />
+                            {mounted ? (
+                                <img src={theme === "light" ? "/evsite-black.svg" : "/evsite.svg"} alt="logo" className="h-6" />
+                            ) : (
+                                <div className="h-6 w-20" />
+                            )}
                         </div>
                         <SidebarGroupLabel>Principal</SidebarGroupLabel>
                         <SidebarMenu>
                             <SidebarMenuItem>
                                 <SidebarMenuButton
-                                    className={pathname === '/' || pathname === '/' ? 'pointer-events-none' : ''}
-                                    isActive={pathname === '/' || pathname === '/'}
+                                    className={pathname === '/' ? 'pointer-events-none' : ''}
+                                    isActive={pathname === '/'}
                                     render={<Link href={`/`}>Eventos</Link>}>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroup>
+                    <Separator />
                     <SidebarGroup>
                         <SidebarGroupLabel>Categorias</SidebarGroupLabel>
                         <SidebarMenu>
@@ -62,13 +74,17 @@ export function EventsSidebar() {
                                 ))
                             ) : (
                                 categorias.map((categoria) => {
-                                    const slug = categoria.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '-');
+                                    const slug = slugifyCategoria(categoria);
+                                    const Icon = getCategoryIcon(categoria);
                                     return (
                                         <SidebarMenuItem className="animate-in fade-in duration-300" key={slug}>
                                             <SidebarMenuButton
                                                 className={pathname === `/eventos/${slug}` ? 'pointer-events-none pl-3' : 'opacity-80'}
                                                 isActive={newpathname[2] === slug}
-                                                render={<Link href={`/eventos/${slug}`}>{categoria}</Link>}>
+                                                render={<Link href={`/eventos/${slug}`} />}
+                                            >
+                                                <Icon />
+                                                <span>{categoria}</span>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                     );
@@ -76,6 +92,7 @@ export function EventsSidebar() {
                             )}
                         </SidebarMenu>
                     </SidebarGroup>
+                    <Separator />
                 </SidebarContent>
             </Sidebar>
         </>

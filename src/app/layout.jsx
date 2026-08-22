@@ -2,12 +2,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-import localFont from 'next/font/local'; // Renombrado por convención
+import localFont from 'next/font/local';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const openSauceFont = localFont({
-  // Ruta relativa desde app/layout.js hasta public/fonts/
   src: './fonts/OpenSauceSans-Bold.woff2',
   variable: '--font-open-sauce',
   display: 'swap',
@@ -19,9 +18,8 @@ export const metadata = {
 };
 
 import { Providers } from "./providers";
-// Nota: Si usas shadcn/ui, el archivo suele llamarse "toaster" en lugar de "toast". 
-// Verifica si tu ruta es '@/components/ui/toaster'
 import { Toaster } from "@/components/ui/toast";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 export default function RootLayout({ children }) {
   return (
@@ -34,10 +32,12 @@ export default function RootLayout({ children }) {
       )}
     >
       <body className="min-h-full flex flex-col overflow-x-hidden relative">
-        <Providers>
-          {children}
-        </Providers>
-        <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Providers>
+            {children}
+          </Providers>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

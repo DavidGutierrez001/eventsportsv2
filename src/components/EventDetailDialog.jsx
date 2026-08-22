@@ -17,16 +17,16 @@ import { useAuth } from "@/context/AuthContext";
 import { subscribeToEvent, getMySubscriptions } from "@/services/eventsServices";
 import { toast } from "@/components/ui/toast";
 
-export default function EventDetailDialog({ event, open, onOpenChange, onRequireAuth }) {
+export default function EventDetailDialog({ event, open, onOpenChange, onRequireAuth, readOnly = false }) {
     const { isAuthenticated } = useAuth();
     const [subscriptions, setSubscriptions] = useState([]);
     const [loader, setLoader] = useState(false);
 
     useEffect(() => {
-        if (isAuthenticated && open) {
+        if (!readOnly && isAuthenticated && open) {
             getMySubscriptions().then(setSubscriptions).catch(() => { });
         }
-    }, [isAuthenticated, open]);
+    }, [isAuthenticated, open, readOnly]);
 
     if (!event) return null;
 
@@ -101,7 +101,7 @@ export default function EventDetailDialog({ event, open, onOpenChange, onRequire
                     <Separator />
                     <DialogFooter className="flex-row! font-light justify-between! items-center mt-auto">
                         <span>Comienza el: {new Date(event.fecha).toLocaleDateString("es-ES")}</span>
-                        {isSubscribed ? (
+                        {!readOnly && (isSubscribed ? (
                             <Button type="button" variant="outline" disabled>
                                 <CheckCircle />
                                 Evento inscrito
@@ -111,7 +111,7 @@ export default function EventDetailDialog({ event, open, onOpenChange, onRequire
                                 {loader ? <Spinner /> : <ClipboardPen />}
                                 Inscribir evento
                             </Button>
-                        )}
+                        ))}
                     </DialogFooter>
                 </div>
             </DialogContent>
