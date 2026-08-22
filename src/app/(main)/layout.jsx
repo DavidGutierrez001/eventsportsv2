@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import { ModeToggle } from "@/components/ModeToggle";
 
+import Image from "next/image";
 import Link from "next/link";
 import { getEvents, getMySubscriptions, cancelSubscription } from "@/services/eventsServices"
 import { useState, useEffect } from "react";
@@ -224,7 +225,8 @@ export default function AppLayout({ children }) {
                                         const event = events.find((e) => e._id === sub.evento_id);
                                         return (
                                             <div key={sub._id} className="grid grid-cols-2 justify-self-center border rounded p-3 relative shadow-lg">
-                                                <img
+                                                <Image
+                                                    fill
                                                     src={event?.imagen_url || "/default-image.jpg"}
                                                     alt="foto del evento"
                                                     className="h-full grayscale-50 opacity-10 left-0 w-full absolute object-cover -z-10"

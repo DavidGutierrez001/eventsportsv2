@@ -3,9 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { ImageOff } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
+import Image from "next/image";
 
-export default function EventCard({ event, onClick, variant = "outline" }) {
-    const ghost = variant === "ghost";
+export default function EventCard({ event, onClick }) {
     const { theme } = useTheme();
 
     return (
@@ -14,11 +14,12 @@ export default function EventCard({ event, onClick, variant = "outline" }) {
             variant="none"
             className="relative animate-in fade-in duration-500 h-115 w-70 md:w-80 overflow-hidden bg-black">
             {event.imagen_url ? (
-                <img
+                <Image
+                    fill
                     src={event.imagen_url}
                     alt={`${event.nombre} - Imagen`}
-                    className={`w-full h-full absolute object-cover inset-0 transition-all hover:scale-105 duration-400
-                        ${theme === "light" ? "" : "opacity-90"}`}
+                    className={`h-full object-cover transition-all hover:scale-105 duration-400
+                    ${theme === "light" ? "" : "opacity-90"}`}
                 />
             ) : (
                 <ImageOff className="size-20 text-white/50" strokeWidth={0.7} />

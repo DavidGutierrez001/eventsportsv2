@@ -13,6 +13,7 @@ import { Plus, MoreVerticalIcon, Trash, Pencil, ImagePlus } from "lucide-react";
 import { getEvents, createEvent, updateEvent, deleteEvent, uploadEventImage, deleteEventImage } from "@/services/eventsServices";
 import { toast } from "@/components/ui/toast";
 import EventDetailDialog from "@/components/EventDetailDialog";
+import Image from "next/image";
 
 export default function Eventos() {
     const [events, setEvents] = useState([]);
@@ -122,7 +123,9 @@ function EventImageSection({ initialUrl, imageFile, onImageFileChange, removeIma
         <Field>
             <Label>Imagen</Label>
             {shownImage ? (
-                <img
+                <Image
+                    width={460}
+                    height={280}
                     src={shownImage}
                     alt="Imagen del evento"
                     className="h-40 w-full rounded-md border object-cover"
