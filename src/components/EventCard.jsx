@@ -18,7 +18,7 @@ export default function EventCard({ event, onClick, variant = "outline" }) {
                     src={event.imagen_url}
                     alt={`${event.nombre} - Imagen`}
                     className={ghost
-                        ? "absolute h-full inset-0 opacity-50 transition-opacity hover:opacity-80 object-cover"
+                        ? "absolute h-full inset-0 opacity-50 transition-opacity hover:opacity-80 object-cover w-full"
                         : "absolute object-cover inset-0 opacity-50 transition-opacity hover:opacity-100"}
                 />
             ) : (
