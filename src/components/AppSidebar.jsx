@@ -3,54 +3,22 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Calendar, User, Settings, LogOut } from 'lucide-react';
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarHeader,
-    SidebarGroupLabel,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarMenu,
-} from "@/components/ui/sidebar";
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-    DropdownMenuGroup,
-    DropdownMenuLabel,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-
-import {
-    Avatar,
-    AvatarBadge,
-    AvatarFallback,
-    AvatarImage,
-} from "@/components/ui/avatar";
-
+// shadcn Componentes
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarGroupLabel, SidebarMenuButton, SidebarMenuItem, SidebarMenu, } from "@/components/ui/sidebar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuGroup, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator, } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarBadge, AvatarFallback, AvatarImage, } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-
 import { Badge } from "@/components/ui/badge";
-
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogClose,
-} from "@/components/ui/dialog";
-
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose, } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
+// Context
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
+
+// Iconos
+import { Calendar, User, Settings, LogOut } from 'lucide-react';
 
 function AvatarWithBadge() {
     return (
@@ -65,7 +33,7 @@ function AvatarWithBadge() {
 
 export function AppSidebar() {
     const { theme } = useTheme();
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
 
     const items = [
         {
@@ -75,13 +43,6 @@ export function AppSidebar() {
                     label: "Eventos",
                     path: "/dashboard/eventos",
                     icon: <Calendar className="size-4" />,
-                    beta: true,
-                    disabled: false,
-                },
-                {
-                    label: "Usuarios",
-                    path: "/dashboard/usuarios",
-                    icon: <User className="size-4" />,
                     beta: true,
                     disabled: false,
                 },
@@ -97,20 +58,20 @@ export function AppSidebar() {
     const handleLogout = () => {
         setLogoutDialogOpen(false);
         logout();
-        router.push("/");
+        router.push("/login");
     }
 
-    const logodark = "/eventsports-black.svg";
-    const logolight = "/eventsports.svg";
+    const logodark = "/evsite-black.svg";
+    const logolight = "/evsite.svg";
 
     return (
 
         <Sidebar id="sidebar-trigger">
             <SidebarHeader className="flex flex-col items-center justify-center my-7">
                 {theme === "light" ? (
-                    <img src={logodark} className="h-9" alt="Logo" />
+                    <img src={logodark} className="h-6" alt="Logo" />
                 ) : (
-                    <img src={logolight} className="h-9" alt="Logo" />
+                    <img src={logolight} className="h-6" alt="Logo" />
                 )}
             </SidebarHeader>
             <Separator />
@@ -164,26 +125,17 @@ export function AppSidebar() {
                             >
                                 <AvatarWithBadge />
                                 <div className="flex flex-col items-start justify-center">
-                                    <span>Usuario</span>
+                                    <span>{user?.nombre || "Usuario"}</span>
                                     <span className="text-xs text-foreground/50">
-                                        usuario@email.com
+                                        {user?.email || "usuario@email.com"}
                                     </span>
                                 </div>
                             </DropdownMenuTrigger>
 
-                            <DropdownMenuContent side="top" align="end" className="flex flex-col p-3">
-
-                                <DropdownMenuGroup>
-                                    <DropdownMenuLabel>Menú</DropdownMenuLabel>
-                                    <DropdownMenuItem disabled>
-                                        <Settings />
-                                        Configuración
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
-                                <DropdownMenuSeparator />
+                            <DropdownMenuContent side="top" align="center" className="flex flex-col p-3">
                                 <DropdownMenuGroup>
                                     <DropdownMenuLabel>
-                                        Cuenta
+                                        Sesión
                                     </DropdownMenuLabel>
                                     <DropdownMenuItem onClick={() => setLogoutDialogOpen(true)} variant="destructive">
                                         <LogOut />
