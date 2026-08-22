@@ -1,40 +1,21 @@
 "use client";
 
 import * as React from "react";
-import {
-    SidebarProvider,
-    SidebarTrigger,
-    SidebarInset,
-} from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
 import Link from "next/link";
+
+// shadcn Componentes
+import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTrigger } from "@/components/ui/popover"
+import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
+import { AppSidebar } from "@/components/AppSidebar";
 import { Separator } from "@/components/ui/separator";
-
 import { Button } from "@/components/ui/button"
-
 import { ThemeProvider } from "@/context/ThemeContext";
-
 import { ModeToggle } from "@/components/ModeToggle";
+import { Toaster } from "@/components/ui/toast"
+import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, } from "@/components/ui/breadcrumb"
 
-import { Toaster } from "@/components/ui/sonner"
-
-import {
-    Popover,
-    PopoverContent,
-    PopoverDescription,
-    PopoverHeader,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-
-import {
-    Breadcrumb,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-
+// Iconos
 import { Bell } from "lucide-react";
 
 export default function RootLayout({ children }) {
