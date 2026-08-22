@@ -1,13 +1,16 @@
-import { Bebas_Neue, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
+import localFont from 'next/font/local'; // Renombrado por convención
+
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
-const bebasNeue = Bebas_Neue({
-  variable: "--font-bebas",
-  subsets: ["latin"],
-  weight: "400",
+const openSauceFont = localFont({
+  // Ruta relativa desde app/layout.js hasta public/fonts/
+  src: './fonts/OpenSauceSans-Bold.woff2',
+  variable: '--font-open-sauce',
+  display: 'swap',
 });
 
 export const metadata = {
@@ -16,17 +19,25 @@ export const metadata = {
 };
 
 import { Providers } from "./providers";
+// Nota: Si usas shadcn/ui, el archivo suele llamarse "toaster" en lugar de "toast". 
+// Verifica si tu ruta es '@/components/ui/toaster'
+import { Toaster } from "@/components/ui/toast";
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="es"
-      className={cn("h-full", "antialiased", "dark", bebasNeue.variable, "font-sans", inter.variable)}
+      className={cn(
+        "h-full antialiased dark scrollbar-thumb-accent font-sans",
+        inter.variable,
+        openSauceFont.variable
+      )}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden relative">
+      <body className="min-h-full flex flex-col overflow-x-hidden relative animate-in fade-in-0 duration-1000">
         <Providers>
           {children}
         </Providers>
+        <Toaster />
       </body>
     </html>
   );
