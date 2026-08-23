@@ -1,6 +1,6 @@
 # Ev.site
 
-**Plataforma de eventos deportivos: descubre, inscríbete y gestiona competencias de ciclismo, natación, maratón y más.**
+**Plataforma de eventos deportivos, culturales... etc: descubre, inscríbete y gestiona.**
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)](https://react.dev/)
