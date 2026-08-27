@@ -29,14 +29,14 @@ export default function Home() {
     useEffect(() => {
         const fetchEvents = async () => {
             const data = await getEvents();
-            setEvents(data);
+            setEvents(data || []);
             setLoading(false);
         };
 
         fetchEvents();
     }, []);
 
-    const eventosPorCategoria = events?.reduce((acc, event) => {
+    const eventosPorCategoria = (events || []).reduce((acc, event) => {
         const categoria = event.categoria || "No hay categorías";
         if (!acc[categoria]) {
             acc[categoria] = [];
@@ -48,7 +48,7 @@ export default function Home() {
     return (
         <div className="p-5 gap-5 relative min-h-[calc(100svh-77px)]">
             <div className="flex flex-col gap-5">
-                {loading && (
+                {loading ? (
                     <section className="flex flex-col gap-3">
                         <Skeleton className="text-xl font-bold h-5 w-30 animate-in fade-in-0 duration-300"></Skeleton>
                         <div className="flex gap-5 justify-self-start w-full animate-in fade-in-0 duration-300">
@@ -57,9 +57,7 @@ export default function Home() {
                             ))}
                         </div>
                     </section>
-                )}
-
-                {events && (
+                ) : events && events.length > 0 ? (
                     Object.entries(eventosPorCategoria).map(([nombreCategoria, listaEventos]) => (
                         <section key={nombreCategoria} className="flex flex-col gap-3">
                             <h1 className="text-xl">{nombreCategoria}</h1>
@@ -79,6 +77,8 @@ export default function Home() {
                             <Separator />
                         </section>
                     ))
+                ) : (
+                    <span className="font-light text-xs">Error al cargar los eventos.</span>
                 )}
             </div>
 
