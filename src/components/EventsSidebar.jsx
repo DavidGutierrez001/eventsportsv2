@@ -28,14 +28,13 @@ export function EventsSidebar() {
             };
             fetchEvents();
         } catch (error) {
-            console.error("Error fetching events:", error);
         } finally {
             setLoading(false);
         }
     }, []);
 
     // Obtener categorías únicas de los eventos
-    const categorias = [...new Set(events.map((e) => e.categoria).filter(Boolean))];
+    const categorias = [...new Set(events?.map((e) => e.categoria).filter(Boolean))];
 
     return (
         <>
@@ -47,8 +46,8 @@ export function EventsSidebar() {
                             {mounted ? (
                                 <Image height={80} width={80} src={theme === "light" ? "/evsite-black.svg" : "/evsite.svg"} alt="logo" />
                             ) : (
-                            <div className="h-6 w-20" />
-)}
+                                <div className="h-6 w-20" />
+                            )}
                         </div>
                         <SidebarGroupLabel>Principal</SidebarGroupLabel>
                         <SidebarMenu>
@@ -66,6 +65,7 @@ export function EventsSidebar() {
                         <SidebarGroupLabel>Categorias</SidebarGroupLabel>
                         <SidebarMenu>
                             {loading ? (
+                                // 1. Si está cargando, muestra los skeletons
                                 Array.from({ length: 15 }).map((_, index) => (
                                     <SidebarMenuItem key={`skeleton-${index}`}>
                                         <div className="px-3 py-2">
@@ -73,7 +73,8 @@ export function EventsSidebar() {
                                         </div>
                                     </SidebarMenuItem>
                                 ))
-                            ) : (
+                            ) : categorias && categorias.length > 0 ? (
+                                // 2. Si ya cargó y SÍ hay categorías, haz el map
                                 categorias.map((categoria) => {
                                     const slug = slugifyCategoria(categoria);
                                     const Icon = getCategoryIcon(categoria);
@@ -90,6 +91,11 @@ export function EventsSidebar() {
                                         </SidebarMenuItem>
                                     );
                                 })
+                            ) : (
+                                // 3. Si ya cargó pero NO hay categorías o la API falló (devuelve null/vacío)
+                                <div className="px-3 py-2">
+                                    <span className="font-light text-xs">Error al cargar las categorías.</span>
+                                </div>
                             )}
                         </SidebarMenu>
                     </SidebarGroup>

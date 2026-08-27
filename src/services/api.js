@@ -1,6 +1,5 @@
 import { toast } from "@/components/ui/toast";
 
-// Producción (Sin el /docs al final)
 const API_BASE_URL = "https://sistema-gestion-api-lqx3.onrender.com";
 
 // Desarrollo local
@@ -10,7 +9,6 @@ async function request(path, options = {}) {
     let res;
 
     try {
-        // 1. Guardamos la respuesta en 'res'
         res = await fetch(`${API_BASE_URL}${path}`, {
             credentials: "include",
             ...options,
